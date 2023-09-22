@@ -1,5 +1,6 @@
 'use strict';
 import DID_API from './api.json' assert { type: 'json' };
+// import OpenAIApi from "openai";
 
 if (DID_API.key == '🤫') alert('Please put your api key inside ./api.json and restart..');
 
@@ -42,7 +43,7 @@ connectButton.onclick = async () => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      source_url: 'https://d-id-public-bucket.s3.amazonaws.com/or-roman.jpg',
+      source_url: 'https://static.printler.com/cache/e/f/b/0/c/1/efb0c18c6b9976bb0e73b5dba136836e182b0a59.jpg',
     }),
   });
 
@@ -72,9 +73,41 @@ connectButton.onclick = async () => {
   });
 };
 
+document.getElementById("myForm").addEventListener("submit", async function(event) {
+  event.preventDefault(); // Prevent the default form submission behavior
+
+  // Get the input value
+  var nameInput = document.getElementById("name").value;
+  // const openai = new OpenAI({
+  //   apiKey: "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",
+  // });
+  // const response = await openai.chat.completions.create({
+  //   model: "gpt-4-0613",
+  //   messages: [
+  //     {
+  //       "role": "system",
+  //       "content": ""
+  //     },
+  //     {
+  //       "role": "user",
+  //       "content": "TEST TEST TEST"
+  //     }
+  //   ],
+  //   temperature: 1,
+  //   max_tokens: 598,
+  //   top_p: 1,
+  //   frequency_penalty: 0,
+  //   presence_penalty: 0,
+  // });
+  // console.log(response)
+  document.getElementById("result").innerText = nameInput;
+});
+
+
 const talkButton = document.getElementById('talk-button');
 talkButton.onclick = async () => {
   // connectionState not supported in firefox
+  var input_text = document.getElementById("result").innerText
   if (peerConnection?.signalingState === 'stable' || peerConnection?.iceConnectionState === 'connected') {
     const talkResponse = await fetchWithRetries(`${DID_API.url}/talks/streams/${streamId}`, {
       method: 'POST',
@@ -83,13 +116,23 @@ talkButton.onclick = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        // script: {
+        //   type: 'audio',
+        //   audio_url: 'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/webrtc.mp3',
+        // },
         script: {
-          type: 'audio',
-          audio_url: 'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/webrtc.mp3',
+          type: 'text',
+          reduce_noise: 'false',
+          provider: {
+            type: 'microsoft',
+            voice_id: 'en-US-TonyNeural'
+          },
+          input: input_text
         },
         driver_url: 'bank://lively/',
         config: {
-          stitch: true,
+          fluent: 'false',
+          pad_audio: '0.0'
         },
         session_id: sessionId,
       }),
@@ -162,7 +205,7 @@ function onVideoStatusChange(videoIsPlaying, stream) {
     setVideoElement(remoteStream);
   } else {
     status = 'empty';
-    playIdleVideo();
+    // playIdleVideo();
   }
   streamingStatusLabel.innerText = status;
   streamingStatusLabel.className = 'streamingState-' + status;
