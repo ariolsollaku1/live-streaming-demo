@@ -3,12 +3,15 @@
   <head>
     <title>D-ID Streaming POC</title>
     <!-- added google fonts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <style>
       .peerConnectionState-new {
@@ -136,15 +139,49 @@
       video {
         display: block;
         /*border:1px solid;*/
-        border-radius: 50%;
         background-color: #fff;
       }
+
+
+        /* Style for the chat input container */
+        .chat-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 8px;
+        }
+
+        /* Style for the input field */
+        .chat-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        /* Style for the send button (Font Awesome icon) */
+        .send-button {
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #007bff; /* Change the color as needed */
+        }
+        
     </style>
   </head>
 
   <body>
     <!-- adde "id=content" -->
     <div id="content">
+      <!-- Default switch -->
+      <div class="custom-control custom-switch float-right mt-2">
+        <input type="checkbox" class="custom-control-input" id="customSwitches">
+        <label class="custom-control-label" for="customSwitches"></label>
+      </div>
       <!-- added "id=video-wrapper" -->
       <div id="video-wrapper">
         <div>
@@ -153,16 +190,22 @@
       </div>
       <br />
       <form id="myForm">
-        <label for="name">Chat GPT Question:</label>
-        <input type="text" id="name" name="name" required>
-        
-        <input type="submit" value="Submit">
+        <div class="chat-input-container">
+          <!-- <input type="text" id="message-input" placeholder="Type a message...">
+          <button id="send-button" class="btn btn-primary">
+            <i class="fas fa-arrow-right"></i>
+        </button> -->
+        <input type="text" class="chat-input" placeholder="Type your message...">
+        <button class="send-button" id="send-button">
+            <i class="fas fa-paper-plane"></i> <!-- Send icon -->
+        </button>
+              </div>
     </form>
 
     <p id="result"></p>
       <!-- added div#buttons -->
       <div id="buttons">
-        <button id="connect-button" type="button">Connect</button>
+        <!-- <button id="connect-button" type="button">Connect</button> -->
         <button id="talk-button" type="button">Start</button>
         <button id="destroy-button" type="button">Destroy</button>
       </div>
