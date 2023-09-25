@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 
-const port = 80;
+const port = 3030;
 
 const app = express();
 app.use('/', express.static(__dirname));

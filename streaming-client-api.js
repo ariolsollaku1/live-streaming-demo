@@ -78,28 +78,46 @@ document.getElementById("myForm").addEventListener("submit", async function(even
 
   // Get the input value
   var nameInput = document.getElementById("name").value;
-  // const openai = new OpenAI({
-  //   apiKey: "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",
-  // });
-  // const response = await openai.chat.completions.create({
-  //   model: "gpt-4-0613",
-  //   messages: [
-  //     {
-  //       "role": "system",
-  //       "content": ""
-  //     },
-  //     {
-  //       "role": "user",
-  //       "content": "TEST TEST TEST"
-  //     }
-  //   ],
-  //   temperature: 1,
-  //   max_tokens: 598,
-  //   top_p: 1,
-  //   frequency_penalty: 0,
-  //   presence_penalty: 0,
-  // });
-  // console.log(response)
+
+  // curl --location 'https://api.openai.com/v1/chat/completions' \
+  // --header 'Content-Type: application/json' \
+  // --header 'Authorization: Bearer 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' \
+  // --data '{
+  //     "model": "gpt-3.5-turbo-16k",
+  //     "messages": [
+  //         {
+  //             "role": "user",
+  //             "content": "hmm, well i expect you to tell me where to invest the money"  
+  //         }
+  //     ],
+  //     "temperature": 0.8
+  // }'
+
+  const talkResponse = await fetchWithRetries(`https://api.openai.com/v1/chat/completions`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer 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`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      "model": "gpt-3.5-turbo-16k",
+      "messages": [
+          {
+              "role": "user",
+              "content": nameInput
+          }
+      ],
+      "temperature": 0.8
+    }),
+  });
+
+  console.log(talkResponse.body)
+
+// MOS HARRO TE SHKURTOSH PERGJIGJEN E CHATGTP. 
+
+  debugger
+
+
   document.getElementById("result").innerText = nameInput;
 });
 
