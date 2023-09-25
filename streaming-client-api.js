@@ -96,7 +96,7 @@ document.getElementById("myForm").addEventListener("submit", async function(even
   const talkResponse = await fetchWithRetries(`https://api.openai.com/v1/chat/completions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer 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`,
+      Authorization: `Bearer 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`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -111,14 +111,18 @@ document.getElementById("myForm").addEventListener("submit", async function(even
     }),
   });
 
-  console.log(talkResponse.body)
+  const responseData = await talkResponse.json();
+  const modelResponse = responseData.choices[0].message.content;
+  console.log("Modelresponse", modelResponse);
 
-// MOS HARRO TE SHKURTOSH PERGJIGJEN E CHATGTP. 
+const limitedResponse = modelResponse.slice(0, 5);
+  console.log(talkResponse.body);
 
-  debugger
+
+  //debugger;
 
 
-  document.getElementById("result").innerText = nameInput;
+  document.getElementById("result").innerText = limitedResponse;
 });
 
 
