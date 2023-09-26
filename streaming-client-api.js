@@ -165,6 +165,14 @@ async function onSendMessage() {
 
 }
 
+$(document).ready(function() {
+  $('#message').keydown(function(event) {
+    if (event.which === 13) {  
+      event.preventDefault();  
+      $('#send-button').click();  
+    }
+  });
+});
 // document.getElementById("myForm").addEventListener("submit", async function(event) {
 
 // });
@@ -367,11 +375,5 @@ async function fetchWithRetries(url, options, retries = 1) {
     } else {
       throw new Error(`Max retries exceeded. error: ${err}`);
     }
-  }
-}
-
-function handleEnter(event) {
-  if (event.key === 'Enter') {
-     document.getElementById('send-button').click(); // Simulate a click on the "Send" button
   }
 }
