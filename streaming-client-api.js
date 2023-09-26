@@ -27,8 +27,8 @@ const iceGatheringStatusLabel = document.getElementById('ice-gathering-status-la
 const signalingStatusLabel = document.getElementById('signaling-status-label');
 const streamingStatusLabel = document.getElementById('streaming-status-label');
 
-const connectButton = document.getElementById('connect-button');
-connectButton.onclick = async () => {
+
+async function connect() {
   if (peerConnection && peerConnection.connectionState === 'connected') {
     return;
   }
@@ -71,41 +71,34 @@ connectButton.onclick = async () => {
       session_id: sessionId,
     }),
   });
-};
+}
 
-document.getElementById("myForm").addEventListener("submit", async function(event) {
-  event.preventDefault(); // Prevent the default form submission behavior
+document.addEventListener('DOMContentLoaded', async () => {
+  await connect();
+});
+
+document.getElementById("send-button").addEventListener("click", onSendMessage);
+
+async function onSendMessage() {
 
   // Get the input value
-  var nameInput = document.getElementById("name").value;
-
-  // curl --location 'https://api.openai.com/v1/chat/completions' \
-  // --header 'Content-Type: application/json' \
-  // --header 'Authorization: Bearer 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' \
-  // --data '{
-  //     "model": "gpt-3.5-turbo-16k",
-  //     "messages": [
-  //         {
-  //             "role": "user",
-  //             "content": "hmm, well i expect you to tell me where to invest the money"  
-  //         }
-  //     ],
-  //     "temperature": 0.8
-  // }'
+  var nameInput = document.getElementById("message").value;
+  const spinner = document.querySelector('.spinner-border');
+  spinner.style.display = 'block';
 
   const talkResponse = await fetchWithRetries(`https://api.openai.com/v1/chat/completions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer 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`,
+      Authorization: `Bearer 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`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       "model": "gpt-3.5-turbo-16k",
       "messages": [
-          {
-              "role": "user",
-              "content": nameInput
-          }
+        {
+          "role": "user",
+          "content": nameInput
+        }
       ],
       "temperature": 0.8
     }),
@@ -115,21 +108,20 @@ document.getElementById("myForm").addEventListener("submit", async function(even
   const modelResponse = responseData.choices[0].message.content;
   console.log("Modelresponse", modelResponse);
 
-const limitedResponse = modelResponse.slice(0, 5);
+  // const limitedResponse = modelResponse.slice(0, 5);
   console.log(talkResponse.body);
 
+  spinner.style.display = 'none';
 
   //debugger;
 
 
-  document.getElementById("result").innerText = limitedResponse;
-});
+  // document.getElementById("result").innerText = limitedResponse;
 
 
-const talkButton = document.getElementById('talk-button');
-talkButton.onclick = async () => {
-  // connectionState not supported in firefox
-  var input_text = document.getElementById("result").innerText
+  //start
+  var input_text = modelResponse; //document.getElementById("result").innerText
+
   if (peerConnection?.signalingState === 'stable' || peerConnection?.iceConnectionState === 'connected') {
     const talkResponse = await fetchWithRetries(`${DID_API.url}/talks/streams/${streamId}`, {
       method: 'POST',
@@ -160,6 +152,49 @@ talkButton.onclick = async () => {
       }),
     });
   }
+
+
+}
+
+// document.getElementById("myForm").addEventListener("submit", async function(event) {
+
+// });
+
+
+const talkButton = document.getElementById('talk-button');
+talkButton.onclick = async () => {
+  // connectionState not supported in firefox
+  // var input_text = document.getElementById("result").innerText
+  // if (peerConnection?.signalingState === 'stable' || peerConnection?.iceConnectionState === 'connected') {
+  //   const talkResponse = await fetchWithRetries(`${DID_API.url}/talks/streams/${streamId}`, {
+  //     method: 'POST',
+  //     headers: {
+  //       Authorization: `Basic ${DID_API.key}`,
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       // script: {
+  //       //   type: 'audio',
+  //       //   audio_url: 'https://d-id-public-bucket.s3.us-west-2.amazonaws.com/webrtc.mp3',
+  //       // },
+  //       script: {
+  //         type: 'text',
+  //         reduce_noise: 'false',
+  //         provider: {
+  //           type: 'microsoft',
+  //           voice_id: 'en-US-TonyNeural'
+  //         },
+  //         input: input_text
+  //       },
+  //       driver_url: 'bank://lively/',
+  //       config: {
+  //         fluent: 'false',
+  //         pad_audio: '0.0'
+  //       },
+  //       session_id: sessionId,
+  //     }),
+  //   });
+  // }
 };
 
 const destroyButton = document.getElementById('destroy-button');
@@ -294,8 +329,8 @@ function setVideoElement(stream) {
   if (talkVideo.paused) {
     talkVideo
       .play()
-      .then((_) => {})
-      .catch((e) => {});
+      .then((_) => { })
+      .catch((e) => { });
   }
 }
 

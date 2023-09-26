@@ -1,227 +1,56 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>D-ID Streaming POC</title>
-    <!-- added google fonts -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <style>
-      .peerConnectionState-new {
-        color: cornflowerblue;
-      }
-      .peerConnectionState-connecting {
-        color: orange;
-      }
-      .peerConnectionState-connected {
-        color: green;
-      }
-      .peerConnectionState-disconnected,
-      .peerConnectionState-closed,
-      .peerConnectionState-failed {
-        color: red;
-      }
-
-      .iceConnectionState-new {
-        color: cornflowerblue;
-      }
-      .iceConnectionState-checking {
-        color: orange;
-      }
-      .iceConnectionState-connected,
-      .iceConnectionState-completed {
-        color: green;
-      }
-      .peerConnectionState-disconnected,
-      .peerConnectionState-closed,
-      .peerConnectionState-failed {
-        color: red;
-      }
-
-      .iceGatheringState-new {
-        color: cornflowerblue;
-      }
-      .iceGatheringState-gathering {
-        color: orange;
-      }
-      .iceGatheringState-complete {
-        color: black;
-      }
-
-      .signalingState-stable {
-        color: green;
-      }
-      .signalingState-have-local-offer,
-      .signalingState-have-remote-offer,
-      .signalingState-have-local-pranswer,
-      .signalingState-have-remote-pranswer {
-        color: cornflowerblue;
-      }
-      .signalingState-closed {
-        color: red;
-      }
-
-      .streamingState-streaming {
-        color: green;
-      }
-
-      .streamingState-empty {
-        color: grey;
-      }
-
-      /* added css from here */
-
-      body * {
-        font-family: 'Mulish', sans-serif;
-        text-align: center;
-      }
-
-      #content {
-        width: 820px;
-        position: relative;
-        margin: 0 auto;
-      }
-
-      #buttons {
-        clear: both;
-        padding: 0 0 0 0;
-        text-align: center;
-      }
-
-      button {
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        font-size: 16px;
-        margin: 0 5px;
-        background-color: #7459fe;
-        color: #fff;
-      }
-
-      button:hover {
-        background-color: #9480ff;
-        cursor: pointer;
-        transition: all 0.2s ease-out;
-      }
-
-      #status {
-        clear: both;
-        padding: 20px 0 0 0;
-        text-align: left;
-        display: inline-block;
-        zoom: 1;
-        line-height: 140%;
-        font-size: 15px;
-      }
-
-      #status div {
-        padding-bottom: 10px;
-      }
-
-      #video-wrapper {
-        background: url(bg.png);
-        height: 500px;
-        background-position: top;
-      }
-
-      #video-wrapper div {
-        width: 400px;
-        margin: 0 auto;
-        padding: 50px 0 0 0;
-      }
-      video {
-        display: block;
-        /*border:1px solid;*/
-        background-color: #fff;
-      }
+<head>
+  <title>D-ID Streaming POC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-        /* Style for the chat input container */
-        .chat-input-container {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 8px;
-        }
+  <link rel="stylesheet" href="/public/css/style.css">
 
-        /* Style for the input field */
-        .chat-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            padding: 8px;
-            font-size: 16px;
-        }
+  <!-- added google fonts -->
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 
-        /* Style for the send button (Font Awesome icon) */
-        .send-button {
-            background: none;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            font-size: 18px;
-            color: #007bff; /* Change the color as needed */
-        }
-        
-    </style>
-  </head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <body>
-    <!-- adde "id=content" -->
-    <div id="content">
-      <!-- Default switch -->
-      <div class="custom-control custom-switch float-right mt-2">
-        <input type="checkbox" class="custom-control-input" id="customSwitches">
-        <label class="custom-control-label" for="customSwitches"></label>
+</head>
+
+
+
+<body>
+  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;position: absolute; left: calc(50% - 1.5rem); top: calc(50% - 1.5rem - 65px)" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div id="video-wrapper" style="width: 100%; height: calc(100vh - 65px);">
+      <div>
+        <video id="talk-video"  style="width: 100%; height: calc(100vh - 65px);" autoplay></video>
       </div>
-      <!-- added "id=video-wrapper" -->
-      <div id="video-wrapper">
-        <div>
-          <video id="talk-video" width="400" height="400" autoplay></video>
-        </div>
-      </div>
-      <br />
+    </div>  
+  </div>
+  <div class="row" style="position: fixed; bottom: 0px; left: 0px; right: 0px;">
+    <div class="col-md-12">
       <form id="myForm">
         <div class="chat-input-container">
-          <!-- <input type="text" id="message-input" placeholder="Type a message...">
-          <button id="send-button" class="btn btn-primary">
-            <i class="fas fa-arrow-right"></i>
-        </button> -->
-        <input type="text" class="chat-input" placeholder="Type your message...">
-        <button class="send-button" id="send-button">
+          <input type="text" class="chat-input" name="message" id="message" placeholder="Type your message...">
+          <button type="button" class="send-button" id="send-button">
             <i class="fas fa-paper-plane"></i> <!-- Send icon -->
-        </button>
-              </div>
-    </form>
-
-    <p id="result"></p>
-      <!-- added div#buttons -->
-      <div id="buttons">
-        <!-- <button id="connect-button" type="button">Connect</button> -->
-        <button id="talk-button" type="button">Start</button>
-        <button id="destroy-button" type="button">Destroy</button>
-      </div>
-
-      <!-- added div#status -->
-      <div id="status">
-        <!-- removed the wrapping <div> tags -->
-        ICE gathering status: <label id="ice-gathering-status-label"></label
-        ><br />
-        ICE status: <label id="ice-status-label"></label><br />
-        Peer connection status: <label id="peer-status-label"></label><br />
-        Signaling status: <label id="signaling-status-label"></label><br />
-        Streaming status: <label id="streaming-status-label"></label><br />
-      </div>
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
+</div>
 
-    <script type="module" src="./index.js"></script>
-  </body>
+
+
+
+</body>
+
+<script type="module" src="./index.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </html>
