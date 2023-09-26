@@ -93,7 +93,7 @@ async function onSendMessage() {
   const talkResponse = await fetchWithRetries(`https://api.openai.com/v1/chat/completions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer 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`,
+      Authorization: `Bearer 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`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -107,7 +107,7 @@ async function onSendMessage() {
       "temperature": 0.8
     }),
   });
-
+  debugger
   const responseData = await talkResponse.json();
   const modelResponse = responseData.choices[0].message.content;
   console.log("Modelresponse", modelResponse);
@@ -367,5 +367,11 @@ async function fetchWithRetries(url, options, retries = 1) {
     } else {
       throw new Error(`Max retries exceeded. error: ${err}`);
     }
+  }
+}
+
+function handleEnter(event) {
+  if (event.key === 'Enter') {
+     document.getElementById('send-button').click(); // Simulate a click on the "Send" button
   }
 }

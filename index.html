@@ -36,7 +36,7 @@
     <div class="col-md-12">
       <form id="myForm">
         <div class="chat-input-container">
-          <input type="text" class="chat-input" name="message" id="message" placeholder="Type your message...">
+          <input type="text" class="chat-input" name="message" id="message" placeholder="Type your message..." onkeydown="handleEnter(event)">
           <button type="button" class="send-button" id="send-button">
             <i class="fas fa-paper-plane"></i> <!-- Send icon -->
           </button>
