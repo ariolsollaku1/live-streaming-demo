@@ -1,6 +1,11 @@
 'use strict';
-import DID_API from './api.json' assert { type: 'json' };
+
 // import OpenAIApi from "openai";
+
+var DID_API = {
+  key: "Z2FsYXBjaGV2QGdtYWlsLmNvbQ:yub5GHSW3yfB0AJEOjHW5",
+  url: "https://api.d-id.com",
+}
 
 if (DID_API.key == '🤫') alert('Please put your api key inside ./api.json and restart..');
 
