@@ -105,6 +105,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 document.getElementById("send-button").addEventListener("click", onSendMessage);
+talkVideo.addEventListener("click", toggleAudio);
+
+function toggleAudio() {
+  $("#talk-video").prop('muted', false);
+}
 
 async function onSendMessage() {
 
@@ -347,7 +352,7 @@ function setVideoElement(stream) {
 
 function playIdleVideo() {
   talkVideo.srcObject = undefined;
-  talkVideo.src = 'or_idle.mp4';
+  talkVideo.src = 'public/video/video.mp4';
   talkVideo.loop = true;
 }
 
