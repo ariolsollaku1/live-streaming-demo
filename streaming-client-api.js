@@ -1,6 +1,6 @@
 'use strict';
 import DID_API from './api.json' assert { type: 'json' };
-require('dotenv').config()
+// require('dotenv').config()
 // import OpenAIApi from "openai";
 
 if (DID_API.key == '🤫') alert('Please put your api key inside ./api.json and restart..');
@@ -94,7 +94,7 @@ async function onSendMessage() {
   const talkResponse = await fetchWithRetries(`https://api.openai.com/v1/chat/completions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${proces.env.OPENAI_KEY}`,
+      Authorization: `Bearer ${DID_API.openai_key}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
