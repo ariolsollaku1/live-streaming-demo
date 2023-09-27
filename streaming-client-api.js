@@ -22,14 +22,14 @@ let lastBytesReceived;
 
 const talkVideo = document.getElementById('talk-video');
 talkVideo.setAttribute('playsinline', '');
-const peerStatusLabel = document.getElementById('peer-status-label');
-const iceStatusLabel = document.getElementById('ice-status-label');
-const iceGatheringStatusLabel = document.getElementById('ice-gathering-status-label');
-const signalingStatusLabel = document.getElementById('signaling-status-label');
-const streamingStatusLabel = document.getElementById('streaming-status-label');
+// const peerStatusLabel = document.getElementById('peer-status-label');
+// const iceStatusLabel = document.getElementById('ice-status-label');
+// const iceGatheringStatusLabel = document.getElementById('ice-gathering-status-label');
+// const signalingStatusLabel = document.getElementById('signaling-status-label');
+// const streamingStatusLabel = document.getElementById('streaming-status-label');
 
-const connectButton = document.getElementById('connect-button');
-connectButton.onclick = async () => {
+
+async function connect() {
   if (peerConnection && peerConnection.connectionState === 'connected') {
     return;
   }
@@ -72,13 +72,24 @@ connectButton.onclick = async () => {
       session_id: sessionId,
     }),
   });
-};
+}
 
-document.getElementById("myForm").addEventListener("submit", async function(event) {
-  event.preventDefault(); // Prevent the default form submission behavior
+document.addEventListener('DOMContentLoaded', async () => {
+  await connect();
+});
+
+document.getElementById("send-button").addEventListener("click", onSendMessage);
+
+async function onSendMessage() {
 
   // Get the input value
-  var nameInput = document.getElementById("name").value;
+  var nameInput = document.getElementById("message").value;
+
+  var messageInput = document.getElementById("message");
+  messageInput.style.display = "none";
+
+  const spinner = document.querySelector('.spinner-border');
+  spinner.style.display = 'block';
 
   const talkResponse = await fetchWithRetries(`https://api.openai.com/v1/chat/completions`, {
     method: 'POST',
@@ -89,30 +100,32 @@ document.getElementById("myForm").addEventListener("submit", async function(even
     body: JSON.stringify({
       "model": "gpt-3.5-turbo-16k",
       "messages": [
-          {
-              "role": "user",
-              "content": nameInput
-          }
+        {
+          "role": "user",
+          "content": nameInput
+        }
       ],
       "temperature": 0.8
     }),
   });
-
-  console.log(talkResponse.body)
-
-// MOS HARRO TE SHKURTOSH PERGJIGJEN E CHATGTP. 
-
   debugger
+  const responseData = await talkResponse.json();
+  const modelResponse = responseData.choices[0].message.content;
+  console.log("Modelresponse", modelResponse);
+
+  // const limitedResponse = modelResponse.slice(0, 5);
+  console.log(talkResponse.body);
 
 
-  document.getElementById("result").innerText = nameInput;
-});
+  //debugger;
 
 
-const talkButton = document.getElementById('talk-button');
-talkButton.onclick = async () => {
-  // connectionState not supported in firefox
-  var input_text = document.getElementById("result").innerText
+  // document.getElementById("result").innerText = limitedResponse;
+
+
+  //start
+  var input_text = modelResponse; //document.getElementById("result").innerText
+
   if (peerConnection?.signalingState === 'stable' || peerConnection?.iceConnectionState === 'connected') {
     const talkResponse = await fetchWithRetries(`${DID_API.url}/talks/streams/${streamId}`, {
       method: 'POST',
@@ -143,26 +156,50 @@ talkButton.onclick = async () => {
       }),
     });
   }
-};
+  
+  spinner.style.display = 'none';
 
-const destroyButton = document.getElementById('destroy-button');
-destroyButton.onclick = async () => {
-  await fetch(`${DID_API.url}/talks/streams/${streamId}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Basic ${DID_API.key}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ session_id: sessionId }),
+  // Show the message input again
+  messageInput.style.display = "block";
+  messageInput.value = ""; // Clear the input field
+
+
+}
+
+$(document).ready(function() {
+  $('#message').keydown(function(event) {
+    if (event.which === 13) {  
+      event.preventDefault();  
+      $('#send-button').click();  
+    }
   });
+});
+// document.getElementById("myForm").addEventListener("submit", async function(event) {
 
-  stopAllStreams();
-  closePC();
-};
+// });
+
+// const destroyButton = document.getElementById('destroy-button');
+// destroyButton.onclick = async () => {
+//   await fetch(`${DID_API.url}/talks/streams/${streamId}`, {
+//     method: 'DELETE',
+//     headers: {
+//       Authorization: `Basic ${DID_API.key}`,
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ session_id: sessionId }),
+//   });
+
+//   stopAllStreams();
+//   closePC();
+// };
 
 function onIceGatheringStateChange() {
-  iceGatheringStatusLabel.innerText = peerConnection.iceGatheringState;
-  iceGatheringStatusLabel.className = 'iceGatheringState-' + peerConnection.iceGatheringState;
+  const spinner = document.querySelector('.spinner-border');
+  spinner.style.display = 'block';
+  spinner.style.display = 'none';
+
+  // iceGatheringStatusLabel.innerText = peerConnection.iceGatheringState;
+  // iceGatheringStatusLabel.className = 'iceGatheringState-' + peerConnection.iceGatheringState;
 }
 function onIceCandidate(event) {
   console.log('onIceCandidate', event);
@@ -185,8 +222,8 @@ function onIceCandidate(event) {
   }
 }
 function onIceConnectionStateChange() {
-  iceStatusLabel.innerText = peerConnection.iceConnectionState;
-  iceStatusLabel.className = 'iceConnectionState-' + peerConnection.iceConnectionState;
+  // iceStatusLabel.innerText = peerConnection.iceConnectionState;
+  // iceStatusLabel.className = 'iceConnectionState-' + peerConnection.iceConnectionState;
   if (peerConnection.iceConnectionState === 'failed' || peerConnection.iceConnectionState === 'closed') {
     stopAllStreams();
     closePC();
@@ -194,17 +231,22 @@ function onIceConnectionStateChange() {
 }
 function onConnectionStateChange() {
   // not supported in firefox
-  peerStatusLabel.innerText = peerConnection.connectionState;
-  peerStatusLabel.className = 'peerConnectionState-' + peerConnection.connectionState;
+  // peerStatusLabel.innerText = peerConnection.connectionState;
+  // peerStatusLabel.className = 'peerConnectionState-' + peerConnection.connectionState;
 }
 function onSignalingStateChange() {
-  signalingStatusLabel.innerText = peerConnection.signalingState;
-  signalingStatusLabel.className = 'signalingState-' + peerConnection.signalingState;
+  // signalingStatusLabel.innerText = peerConnection.signalingState;
+  // signalingStatusLabel.className = 'signalingState-' + peerConnection.signalingState;
 }
 
 function onVideoStatusChange(videoIsPlaying, stream) {
   let status;
   if (videoIsPlaying) {
+    const talkVideo = document.getElementById("talk-video");
+    talkVideo.addEventListener("play", function () {
+      // Set the background color to black when video starts playing
+      talkVideo.style.backgroundColor = "black";
+    });
     status = 'streaming';
     const remoteStream = stream;
     setVideoElement(remoteStream);
@@ -212,8 +254,8 @@ function onVideoStatusChange(videoIsPlaying, stream) {
     status = 'empty';
     // playIdleVideo();
   }
-  streamingStatusLabel.innerText = status;
-  streamingStatusLabel.className = 'streamingState-' + status;
+  // streamingStatusLabel.innerText = status;
+  // streamingStatusLabel.className = 'streamingState-' + status;
 }
 
 function onTrack(event) {
@@ -277,8 +319,8 @@ function setVideoElement(stream) {
   if (talkVideo.paused) {
     talkVideo
       .play()
-      .then((_) => {})
-      .catch((e) => {});
+      .then((_) => { })
+      .catch((e) => { });
   }
 }
 
@@ -307,10 +349,10 @@ function closePC(pc = peerConnection) {
   pc.removeEventListener('signalingstatechange', onSignalingStateChange, true);
   pc.removeEventListener('track', onTrack, true);
   clearInterval(statsIntervalId);
-  iceGatheringStatusLabel.innerText = '';
-  signalingStatusLabel.innerText = '';
-  iceStatusLabel.innerText = '';
-  peerStatusLabel.innerText = '';
+  // iceGatheringStatusLabel.innerText = '';
+  // signalingStatusLabel.innerText = '';
+  // iceStatusLabel.innerText = '';
+  // peerStatusLabel.innerText = '';
   console.log('stopped peer connection');
   if (pc === peerConnection) {
     peerConnection = null;
