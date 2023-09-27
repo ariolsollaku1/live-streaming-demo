@@ -90,7 +90,7 @@
   }
 
   button:hover {
-    background-color: #9480ff;
+    /* background-color: #9480ff; */
     cursor: pointer;
     transition: all 0.2s ease-out;
   }
