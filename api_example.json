@@ -1,5 +1,6 @@
 {
     "key": "Z2FsYXBjaGV2QGdtYWlsLmNvbQ:yub5GHSW3yfB0AJEOjHW5",
     "url": "https://api.d-id.com",
-    "openai_key": "key"
+    "openai_key": "key",
+    "env": "prod"
 }
