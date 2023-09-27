@@ -8,6 +8,7 @@ var bodyParser = require('body-parser')
 const port = process.env.PORT;
 
 const app = express();
+app.use(cors());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -15,16 +16,23 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use('/', express.static(__dirname));
 
-app.use(cors())
-
+app.options('/openai', cors());
 app.post('/openai', async function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader("Access-Control-Allow-Headers", "*");
+
     console.log(req.body.messages)
   let resp = await axios.post('https://api.openai.com/v1/chat/completions', {
     "model": "gpt-3.5-turbo-16k",
     "messages": req.body.messages,
-    "temperature": 0.8
+    "temperature": 0.8,
+    "max_tokens": 256,
+    "top_p": 1,
+    "frequency_penalty": 0.49,
+    "presence_penalty": 0.23,
+
   },{
     headers: {
       Authorization: `Bearer ${process.env.OPENAI_KEY}`,
@@ -36,6 +44,10 @@ app.post('/openai', async function (req, res, next) {
 
 })
 
+app.use('/', express.static(__dirname));
+
 const server = http.createServer(app);
+
+
 
 server.listen(port, () => console.log(`Server started on port localhost:${port}`));
