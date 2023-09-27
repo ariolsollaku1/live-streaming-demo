@@ -70,7 +70,7 @@ async function connect() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      source_url: 'https://static.printler.com/cache/e/f/b/0/c/1/efb0c18c6b9976bb0e73b5dba136836e182b0a59.jpg',
+      source_url: 'https://i.postimg.cc/CMPz1RpL/IMG-20230927-WA0010.jpg',
     }),
   });
 
@@ -268,10 +268,12 @@ function onVideoStatusChange(videoIsPlaying, stream) {
   //debugger
   let status;
   if (videoIsPlaying) {
+
     const talkVideo = document.getElementById("talk-video");
     talkVideo.addEventListener("play", function () {
       // Set the background color to black when video starts playing
       talkVideo.style.backgroundColor = "black";
+      talkVideo.style.objectFit = "contain";
     });
     status = 'streaming';
     const remoteStream = stream;
