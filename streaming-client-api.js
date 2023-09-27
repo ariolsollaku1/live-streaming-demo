@@ -168,7 +168,7 @@ async function onSendMessage() {
           reduce_noise: 'false',
           provider: {
             type: 'microsoft',
-            voice_id: 'en-US-TonyNeural'
+            voice_id: 'en-US-DavisNeural'
           },
           input: input_text
         },
