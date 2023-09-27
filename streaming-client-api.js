@@ -1,5 +1,6 @@
 'use strict';
 import DID_API from './api.json' assert { type: 'json' };
+require('dotenv').config()
 // import OpenAIApi from "openai";
 
 if (DID_API.key == '🤫') alert('Please put your api key inside ./api.json and restart..');
@@ -79,24 +80,10 @@ document.getElementById("myForm").addEventListener("submit", async function(even
   // Get the input value
   var nameInput = document.getElementById("name").value;
 
-  // curl --location 'https://api.openai.com/v1/chat/completions' \
-  // --header 'Content-Type: application/json' \
-  // --header 'Authorization: Bearer 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' \
-  // --data '{
-  //     "model": "gpt-3.5-turbo-16k",
-  //     "messages": [
-  //         {
-  //             "role": "user",
-  //             "content": "hmm, well i expect you to tell me where to invest the money"  
-  //         }
-  //     ],
-  //     "temperature": 0.8
-  // }'
-
   const talkResponse = await fetchWithRetries(`https://api.openai.com/v1/chat/completions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer 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`,
+      Authorization: `Bearer ${proces.env.OPENAI_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
