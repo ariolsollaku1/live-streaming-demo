@@ -30,19 +30,13 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 var img = new Image();
-img.src = '/public/img/backgr.jpg';
+img.src = '/public/img/backgr1.jpeg';
 img.onload = function() {
     ctx.drawImage(img, 0, 0);
 };
 
-// var imgface = new Image();
-// imgface.src = '/public/img/face.jpg';
-// imgface.onload = function() {
-//     ctx.drawImage(imgface, 94, 120);
-// };
 
-
-canvas.width = 500;
+canvas.width = 422;
 canvas.height = 800;
 
 // set canvas size = video size when known
@@ -55,7 +49,7 @@ talkVideo.addEventListener('play', function() {
   var $this = this; //cache
   (function loop() {
     if (!$this.paused && !$this.ended) {
-      ctx.drawImage($this, 94, 120, 319, 322);
+      ctx.drawImage($this, 105, 146,189, 189);
       setTimeout(loop, 1000 / 30); // drawing at 30fps
     }
   })();
@@ -110,7 +104,7 @@ async function connect() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      source_url: 'https://i.postimg.cc/CMPz1RpL/IMG-20230927-WA0010.jpg',
+      source_url: 'https://i.postimg.cc/50byzF6t/Madam-Smith-25x10.jpg',
     }),
   });
 
@@ -208,7 +202,7 @@ async function onSendMessage() {
           reduce_noise: 'false',
           provider: {
             type: 'microsoft',
-            voice_id: 'en-US-DavisNeural'
+            voice_id: 'en-GB-SoniaNeural'
           },
           input: input_text
         },
