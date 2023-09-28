@@ -19,15 +19,23 @@
 
 </head>
 <body>
-  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;position: absolute; left: calc(50% - 1.5rem); top: calc(50% - 1.5rem - 65px)" role="status">
+  <div class="spinner-border text-primary" style="z-index: 100; width: 3rem; height: 3rem;position: absolute; left: calc(50% - 1.5rem); top: calc(50% - 1.5rem - 65px)" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
 <div class="container-fluid">
   <div class="row">
-    <div id="video-wrapper" style="width: 100%; height: calc(100vh - 65px);">
+    <div id="video-wrapper" style="width: 100%; height: calc(100vh - 65px); background-image: url('public/img/backgr.jpg');background-size: contain;
+    background-repeat: no-repeat; max-width: 390px; min-height: 624px;">
       <div>
-        <video id="talk-video" style="width: 100%; height: calc(100vh - 65px);object-fit: cover;" playsinline autoplay muted loop >
-          <source src="public/video/video.mp4" type="video/mp4"></video>
+        <video id="talk-video" style="
+        visibility:hidden; position: fixed;" playsinline autoplay loop >
+        </video>
+        <canvas id="canvas" style="position: fixed;
+        left: 0;
+        width: 100vw;
+    height: calc(100vh - 65px);
+    object-fit: cover;
+        top: 0;"></canvas>
       </div>
     </div>  
   </div>

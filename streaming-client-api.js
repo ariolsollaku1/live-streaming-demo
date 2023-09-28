@@ -26,6 +26,41 @@ let lastBytesReceived;
 let conversationHistory = [];
 
 const talkVideo = document.getElementById('talk-video');
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+var img = new Image();
+img.src = '/public/img/backgr.jpg';
+img.onload = function() {
+    ctx.drawImage(img, 0, 0);
+};
+
+// var imgface = new Image();
+// imgface.src = '/public/img/face.jpg';
+// imgface.onload = function() {
+//     ctx.drawImage(imgface, 94, 120);
+// };
+
+
+canvas.width = 500;
+canvas.height = 800;
+
+// set canvas size = video size when known
+talkVideo.addEventListener('loadedmetadata', function() {
+  // canvas.width = talkVideo.videoWidth;
+  // canvas.height = talkVideo.videoHeight;
+});
+
+talkVideo.addEventListener('play', function() {
+  var $this = this; //cache
+  (function loop() {
+    if (!$this.paused && !$this.ended) {
+      ctx.drawImage($this, 94, 120, 319, 322);
+      setTimeout(loop, 1000 / 30); // drawing at 30fps
+    }
+  })();
+}, 0);
+
 talkVideo.setAttribute('playsinline', '');
 // const peerStatusLabel = document.getElementById('peer-status-label');
 // const iceStatusLabel = document.getElementById('ice-status-label');
@@ -180,6 +215,7 @@ async function onSendMessage() {
         driver_url: 'bank://lively/',
         config: {
           fluent: 'false',
+          align_driver: 'false',
           pad_audio: '0.0'
         },
         session_id: sessionId,
@@ -269,6 +305,8 @@ function onSignalingStateChange() {
   // signalingStatusLabel.className = 'signalingState-' + peerConnection.signalingState;
 }
 
+
+
 function onVideoStatusChange(videoIsPlaying, stream) {
   //debugger
   let status;
@@ -276,9 +314,12 @@ function onVideoStatusChange(videoIsPlaying, stream) {
 
     const talkVideo = document.getElementById("talk-video");
     talkVideo.addEventListener("play", function () {
+
+
+
       // Set the background color to black when video starts playing
-      talkVideo.style.backgroundColor = "black";
-      talkVideo.style.objectFit = "contain";
+      // talkVideo.style.backgroundColor = "black";
+      // talkVideo.style.objectFit = "contain";
     });
     status = 'streaming';
     const remoteStream = stream;
