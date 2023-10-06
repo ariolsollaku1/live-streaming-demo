@@ -30,13 +30,19 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 var img = new Image();
-img.src = '/public/img/backgr1.jpeg';
+img.src = '/public/img/stroga-teta.jpg';
 img.onload = function() {
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, -35);
 };
 
+// var img1 = new Image();
+// img1.src = '/public/img/stroga-teta1.jpg';
+// img1.onload = function() {
+//     ctx.drawImage(img1, 116, 35, 270, 270);
+// };
 
-canvas.width = 422;
+
+canvas.width = 500;
 canvas.height = 800;
 
 // set canvas size = video size when known
@@ -49,7 +55,7 @@ talkVideo.addEventListener('play', function() {
   var $this = this; //cache
   (function loop() {
     if (!$this.paused && !$this.ended) {
-      ctx.drawImage($this, 105, 146,189, 189);
+      ctx.drawImage($this,  116, -1, 270, 270);
       setTimeout(loop, 1000 / 30); // drawing at 30fps
     }
   })();
@@ -104,7 +110,7 @@ async function connect() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      source_url: 'https://i.postimg.cc/50byzF6t/Madam-Smith-25x10.jpg',
+      source_url: 'https://i.postimg.cc/XJj2KDmf/stroga-teta.jpg',
     }),
   });
 
