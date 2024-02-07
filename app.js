@@ -27,7 +27,7 @@ app.post('/openai', async function (req, res, next) {
   let resp = await axios.post('https://api.openai.com/v1/chat/completions', {
     "model": "gpt-4-1106-preview",
     "messages": req.body.messages,
-    "temperature": 0.1,
+    "temperature": 0.6,
     "max_tokens": 800,
     "top_p": 1,
     "frequency_penalty": 0,
