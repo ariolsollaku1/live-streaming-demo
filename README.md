@@ -51,13 +51,13 @@ docker pull digitsapiens/live_streaming_demo:latest
 
 ## run container (first time)
 ## run the docker image. Expose the port 4100 to the host machine on port 3300
-docker run -p 3300:4100/tcp --name "digitsapiens_live_streaming_demo" digitsapiens/live_streaming_demo:latest
+docker run -p 3030:3030/tcp --name "digitsapiens_live_streaming_demo" digitsapiens/live_streaming_demo:latest
 
 ## update container
 docker pull digitsapiens/live_streaming_demo:latest && \
 docker stop digitsapiens_live_streaming_demo && \
 docker rm digitsapiens_live_streaming_demo && \
-docker run -p 3300:4100/tcp --name "digitsapiens_live_streaming_demo" digitsapiens/live_streaming_demo:latest &
+docker run -p 3030:3030/tcp --name "digitsapiens_live_streaming_demo" digitsapiens/live_streaming_demo:latest &
 
 ## stop container && rmeove container
 docker stop digitsapiens_live_streaming_demo && docker rm digitsapiens_live_streaming_demo

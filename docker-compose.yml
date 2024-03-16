@@ -13,6 +13,6 @@ services:
   gjirokastra-backend: 
     # build: 
     #   context: .
-    image: digitsapiens/gjirokastra_backend
+    image: digitsapiens/live_streaming_demo:latest
     ports:
       - 3030:3030
