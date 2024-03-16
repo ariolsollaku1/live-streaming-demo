@@ -40,3 +40,27 @@ The second two numbers is the size of the video (width, height)
 To change the video avatar, first upload the image from postman, after that change source_url in streaming-client-api.js (line: 114). It should be the same as the url in postman body.
 
 
+## build image
+docker build -t digitsapiens/live_streaming_demo .
+
+## push image
+docker push digitsapiens/live_streaming_demo:latest
+
+## pull image
+docker pull digitsapiens/live_streaming_demo:latest
+
+## run container (first time)
+## run the docker image. Expose the port 4100 to the host machine on port 3300
+docker run -p 3300:4100/tcp --name "digitsapiens_live_streaming_demo" digitsapiens/live_streaming_demo:latest
+
+## update container
+docker pull digitsapiens/live_streaming_demo:latest && \
+docker stop digitsapiens_live_streaming_demo && \
+docker rm digitsapiens_live_streaming_demo && \
+docker run -p 3300:4100/tcp --name "digitsapiens_live_streaming_demo" digitsapiens/live_streaming_demo:latest &
+
+## stop container && rmeove container
+docker stop digitsapiens_live_streaming_demo && docker rm digitsapiens_live_streaming_demo
+
+## check containers
+docker ps -a
