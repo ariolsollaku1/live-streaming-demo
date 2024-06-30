@@ -46,7 +46,7 @@ app.options('/openai', cors());
 app.post('/openai', async (req, res) => {
   try {
     const messages = [
-      { role: "user", content: "" },
+      { role: "user", content: req.messages},
     ];
 
     const tools = [
@@ -60,7 +60,7 @@ app.post('/openai', async (req, res) => {
     ];
 
     // Call the Flask API (simulated by get_data function)
-    const apiResponse = get_data();
+    const apiResponse = get_data(req.messages);
 
     // Extend messages with API response
     messages.push({
