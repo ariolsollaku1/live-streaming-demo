@@ -65,3 +65,6 @@ docker stop digitsapiens_live_streaming_demo && docker rm digitsapiens_live_stre
 
 ## check containers
 docker ps -a
+
+
+testing
