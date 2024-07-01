@@ -29,9 +29,9 @@ app.post('/openai', async function (req, res, next) {
     "messages": req.body.messages,
     "temperature": 0.67,
     "max_tokens": 420,
-    "top_p": 1,
-    "frequency_penalty": 0.1,
-    "presence_penalty": 0.12,
+    "top_p": 0.67,
+    "frequency_penalty": 0,
+    "presence_penalty": 0,
 
   },{
     headers: {
