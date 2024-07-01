@@ -25,13 +25,13 @@ app.post('/openai', async function (req, res, next) {
 
     console.log(req.body.messages)
   let resp = await axios.post('https://api.openai.com/v1/chat/completions', {
-    "model": "gpt-3.5-turbo-16k-0613",
+    "model": "gpt-4o",
     "messages": req.body.messages,
-    "temperature": 0.94,
-    "max_tokens": 424,
-    "top_p": 1,
-    "frequency_penalty": 0.24,
-    "presence_penalty": 0.22
+    "temperature": 0.6,
+    "max_tokens": 800,
+    "top_p": 0.7,
+    "frequency_penalty": 0,
+    "presence_penalty": 0
 
   },{
     headers: {
