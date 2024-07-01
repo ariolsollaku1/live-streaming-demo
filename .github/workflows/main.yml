@@ -15,11 +15,8 @@ jobs:
       - name: Set tag name based on branch
         id: set_tag
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
-            echo "TAG_NAME=latest" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "TAG_NAME=prod-latest" >> $GITHUB_ENV
-          fi
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "TAG_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Extract repo name
         id: repo_name
