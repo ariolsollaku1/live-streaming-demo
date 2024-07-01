@@ -209,7 +209,7 @@ async function onSendMessage() {
           reduce_noise: 'false',
           provider: {
             type: 'microsoft',
-            voice_id: 'mk-MK-MarijaNeural'
+            voice_id: 'en-GB-AbbiNeural'
           },
           input: input_text
         },
